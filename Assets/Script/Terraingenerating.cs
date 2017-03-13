@@ -12,6 +12,7 @@ public class Terraingenerating : MonoBehaviour {
     public int[] pieceList;
     public int loopStop;
     public int DeleteLoop;
+    public int animToPlay;
     public bool deleteStart;
 	// Use this for initialization
 	void Start () {
@@ -75,13 +76,18 @@ public class Terraingenerating : MonoBehaviour {
         HillsTimes[DeleteLoop] = newTile;
         pieceList[DeleteLoop] = Rand;
         DeleteLoop++;
+        animToPlay++;
         if (DeleteLoop > HillsTimes.Length - 1)
         {
             DeleteLoop = 0;
             deleteStart = true;
         }
-        carAnimator.Play(CliffTiles[pieceList[DeleteLoop]].gameObject.tag, 0, 0f);
-        Debug.Log(CliffTiles[pieceList[DeleteLoop]].gameObject.tag);
+        if (animToPlay > HillsTimes.Length - 1)
+        {
+            animToPlay = 0;
+        }
+        carAnimator.Play(CliffTiles[pieceList[animToPlay]].gameObject.tag, 0, 0f);
+        Debug.Log(CliffTiles[pieceList[animToPlay]].gameObject.tag);
     }
 
 }
