@@ -8,54 +8,52 @@ public class Terraingenerating : MonoBehaviour {
     public GameObject[] HillsTimes;
     public GameObject newTile;
     public GameObject nextAnchor;
-    public Animation carAnimation;
+    public Animator carAnimator;
     public int[] pieceList;
-    public string[] animNames;
     public int loopStop;
     public int DeleteLoop;
     public bool deleteStart;
 	// Use this for initialization
 	void Start () {
-        DeleteLoop = 0;
+       // DeleteLoop = 0;
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if(Input.GetKey(KeyCode.G))
-        {
-            if(deleteStart)
-            Destroy(HillsTimes[DeleteLoop]);
-            int Rand = Random.Range(0, CliffTiles.Length-2);
-            int rand2 = Random.Range(0, 10);
-            if(rand2 == 1 && loopStop == 0)
-            {
-                Rand = CliffTiles.Length - 1;
-                loopStop = 10;
-            }
-            if(rand2 == 2 && loopStop == 0)
-            {
-                Rand = CliffTiles.Length-2;
-                loopStop = 10;
-            }
-            newTile = Instantiate(CliffTiles[Rand], nextAnchor.transform.position, nextAnchor.transform.rotation);
-            nextAnchor = newTile.transform.GetChild(1).gameObject;
-            if(loopStop >0)
-                loopStop--;
-            HillsTimes[DeleteLoop] = newTile;
-            pieceList[DeleteLoop] = Rand;
-            DeleteLoop++;
-            if(DeleteLoop > HillsTimes.Length-1)
-            {
-                DeleteLoop = 0;
-                deleteStart = true;
-            }
-        }
+        //if(Input.GetKey(KeyCode.G))
+        //{
+        //    if(deleteStart)
+        //    Destroy(HillsTimes[DeleteLoop]);
+        //    int Rand = Random.Range(0, CliffTiles.Length-2);
+        //    int rand2 = Random.Range(0, 10);
+        //    if(rand2 == 1 && loopStop == 0)
+        //    {
+        //        Rand = CliffTiles.Length - 1;
+        //        loopStop = 10;
+        //    }
+        //    if(rand2 == 2 && loopStop == 0)
+        //    {
+        //        Rand = CliffTiles.Length-2;
+        //        loopStop = 10;
+        //    }
+        //    newTile = Instantiate(CliffTiles[Rand], nextAnchor.transform.position, nextAnchor.transform.rotation);
+        //    nextAnchor = newTile.transform.GetChild(1).gameObject;
+        //    if(loopStop >0)
+        //        loopStop--;
+        //    HillsTimes[DeleteLoop] = newTile;
+        //    pieceList[DeleteLoop] = Rand;
+        //    DeleteLoop++;
+        //    if(DeleteLoop > HillsTimes.Length-1)
+        //    {
+        //        DeleteLoop = 0;
+        //        deleteStart = true;
+        //    }
+        //}
 
     }
     public void animationEnd()
     {
-       carAnimation.PlayQueued(animNames[pieceList[DeleteLoop]], QueueMode.PlayNow);
         if (deleteStart)
             Destroy(HillsTimes[DeleteLoop]);
         int Rand = Random.Range(0, CliffTiles.Length - 2);
@@ -82,7 +80,8 @@ public class Terraingenerating : MonoBehaviour {
             DeleteLoop = 0;
             deleteStart = true;
         }
-        
+        carAnimator.Play(CliffTiles[pieceList[DeleteLoop]].gameObject.tag, 0, 0f);
+        Debug.Log(CliffTiles[pieceList[DeleteLoop]].gameObject.tag);
     }
 
 }

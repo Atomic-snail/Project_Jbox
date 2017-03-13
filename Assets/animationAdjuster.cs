@@ -28,9 +28,9 @@ public class animationAdjuster : StateMachineBehaviour {
     //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
     //
     //}
-    public void AnimationEnd()
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-
-        
+        animator.transform.parent.gameObject.transform.position = animator.transform.position;
+        animator.transform.parent.gameObject.transform.rotation = animator.transform.rotation;
     }
 }
