@@ -51,7 +51,7 @@
 			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
 			o.Albedo = c.rgb;
 
-			float b = IN.objPos.z - _Scale;
+			float b = IN.objPos.x - _Scale;
 			float a = abs(b - _Music);
 		/*	a -= _Scale;*/
 			o.Albedo.r =saturate( 1 - a * 2);
