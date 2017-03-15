@@ -11,6 +11,11 @@ public class skyTimeChanger : MonoBehaviour {
     public float lerpSpeed;
     public Color[] colours;
     public GameObject Sunlight;
+    public Vector3[] sunRotations;
+    public GameObject stars;
+    public Vector3[] StarScale;
+    public GameObject sunObject;
+    public Vector3[] sunObjRots;
 
     // Use this for initialization
     void Start () {
@@ -36,5 +41,8 @@ public class skyTimeChanger : MonoBehaviour {
         }
         rend.material.mainTextureScale = new Vector2(Mathf.Lerp(rend.material.mainTextureScale.x, tilingPositions[currentStage], lerpSpeed * Time.deltaTime), 1);
         Sunlight.GetComponent<Light>().color = Color.Lerp(Sunlight.GetComponent<Light>().color, colours[currentStage], lerpSpeed * Time.deltaTime);
+        Sunlight.transform.rotation = Quaternion.Lerp(Sunlight.transform.rotation, Quaternion.Euler(sunRotations[currentStage]), lerpSpeed * Time.deltaTime);
+        stars.transform.localScale = Vector3.Lerp(stars.transform.localScale, StarScale[currentStage], lerpSpeed * Time.deltaTime);
+        sunObject.transform.rotation = Quaternion.Lerp(sunObject.transform.rotation, Quaternion.Euler(sunObjRots[currentStage]), lerpSpeed * Time.deltaTime);
     }
 }
