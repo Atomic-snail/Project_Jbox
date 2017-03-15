@@ -6,7 +6,7 @@
 		_Metallic ("Metallic", Range(0,1)) = 0.0
 		_Music("Music", float) = 0.0
 		_Music2("Music2", float) = 0.0
-		_Scale("Scale", float) = -100.9
+		_Scale("Scale", float) = -200.9
 	}
 	SubShader {
 		Tags { "RenderType"="Opaque" }
