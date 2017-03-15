@@ -34,14 +34,14 @@ public class beat : MonoBehaviour {
         //pos.y = pos.y*0.9f + spectrum[0]*0.1f;
         //transform.position = pos;
 
-        if (spectrum[1] > 0.4 && !pulse)
+        if (spectrum[1] > 0.05 && !pulse)
         {
             pulse = true;
             smoothValue = 0;
         }
         if (pulse)
         {
-            smoothValue += Time.deltaTime *5.0f;
+            smoothValue += Time.deltaTime * 4.0f;
             if (smoothValue > 1.8f)
             {
                 pulse = false;
