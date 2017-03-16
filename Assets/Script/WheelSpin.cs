@@ -16,11 +16,11 @@ public class WheelSpin : MonoBehaviour {
 	void Update () {
         if (wheelSide)
         {
-            transform.Rotate(Vector3.right * moveSpeed * Time.deltaTime);
+            transform.Rotate(Vector3.forward * moveSpeed * Time.deltaTime);
         }
         else if (!wheelSide)
         {
-            transform.Rotate(-Vector3.right * moveSpeed * Time.deltaTime);
+            transform.Rotate(-Vector3.forward * moveSpeed * Time.deltaTime);
         }
 	}
 }
