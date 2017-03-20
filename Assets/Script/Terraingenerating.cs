@@ -6,6 +6,7 @@ public class Terraingenerating : MonoBehaviour {
 
     public GameObject[] CliffTiles;
     public GameObject[] HillTiles;
+    public GameObject[] RockTiles;
     public GameObject[] currentPieces;
     public GameObject newTile;
     public GameObject nextAnchor;
@@ -287,15 +288,25 @@ public class Terraingenerating : MonoBehaviour {
         {
             newTile = Instantiate(HillTiles[pieceToGen], nextAnchor.transform.position, nextAnchor.transform.rotation);
         }
+        else if (CurrentTerrainType == "rocks")
+        {
+            newTile = Instantiate(RockTiles[pieceToGen], nextAnchor.transform.position, nextAnchor.transform.rotation);
+        }
         TerrainTypeSmooth++;
         int rand = Random.Range(1, 3);
-        if(TerrainTypeSmooth > TerrainTypeSmoothMax && rand == 1)
+        if (TerrainTypeSmooth > TerrainTypeSmoothMax && rand + TerrainTypeSmooth > TerrainTypeSmoothMax + 3)
         {
             TerrainTypeSmooth = 0;
-            if (CurrentTerrainType == "cliffs")
-                CurrentTerrainType = "hills";
-            else if (CurrentTerrainType == "hills")
-                CurrentTerrainType = "cliffs";
+            string thisTerrainType = CurrentTerrainType;
+            print(thisTerrainType);
+            do
+            {
+                int RandomTerrain = Random.Range(0, terrainTypes.Length);
+                print(RandomTerrain);
+                CurrentTerrainType = terrainTypes[RandomTerrain];
+            } while (CurrentTerrainType == thisTerrainType);
+
+
         }
 
     }
