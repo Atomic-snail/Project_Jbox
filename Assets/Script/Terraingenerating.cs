@@ -8,6 +8,7 @@ public class Terraingenerating : MonoBehaviour {
     public GameObject[] HillTiles;
     public GameObject[] RockTiles;
     public GameObject[] BushesTiles;
+    public GameObject[] HouseTiles;
     public GameObject[] currentPieces;
     public GameObject newTile;
     public GameObject nextAnchor;
@@ -296,6 +297,10 @@ public class Terraingenerating : MonoBehaviour {
         else if (CurrentTerrainType == "bushes")
         {
             newTile = Instantiate(BushesTiles[pieceToGen], nextAnchor.transform.position, nextAnchor.transform.rotation);
+        }
+        else if (CurrentTerrainType == "houses")
+        {
+            newTile = Instantiate(HouseTiles[pieceToGen], nextAnchor.transform.position, nextAnchor.transform.rotation);
         }
         TerrainTypeSmooth++;
         int rand = Random.Range(1, 3);

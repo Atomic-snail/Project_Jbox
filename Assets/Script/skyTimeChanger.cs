@@ -5,17 +5,27 @@ using UnityEngine;
 public class skyTimeChanger : MonoBehaviour {
 
     public float[] tilingPositions;
+    public float[] tilingPositionsEnd;
     public Renderer rend;
     public int currentStage;
     public int prevStage;
-    public float lerpSpeed;
+    public bool isMidStage;
+
     public Color[] colours;
+    public Color[] coloursEnd;
     public GameObject Sunlight;
     public Vector3[] sunRotations;
+    public Vector3[] sunRotationsEnd;
     public GameObject stars;
     public Vector3[] StarScale;
+    public Vector3[] StarScaleEnd;
     public GameObject sunObject;
     public Vector3[] sunObjRots;
+    public Vector3[] sunObjRotsEnd;
+
+    public float StageTransitionTimer;
+    public float lerpSpeedChangeStage;
+    public float lerpSpeedMidStage;
 
     // Use this for initialization
     void Start () {
@@ -25,7 +35,7 @@ public class skyTimeChanger : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-		if(Input.GetKeyDown(KeyCode.T))
+		if(Input.GetKeyDown(KeyCode.T) && isMidStage)
         {
             currentStage++;
             prevStage++;
@@ -37,12 +47,33 @@ public class skyTimeChanger : MonoBehaviour {
             {
                 prevStage = 0;
             }
-
+            isMidStage = false;
         }
-        rend.material.mainTextureScale = new Vector2(Mathf.Lerp(rend.material.mainTextureScale.x, tilingPositions[currentStage], lerpSpeed * Time.deltaTime), 1);
-        Sunlight.GetComponent<Light>().color = Color.Lerp(Sunlight.GetComponent<Light>().color, colours[currentStage], lerpSpeed * Time.deltaTime);
-        Sunlight.transform.rotation = Quaternion.Lerp(Sunlight.transform.rotation, Quaternion.Euler(sunRotations[currentStage]), lerpSpeed * Time.deltaTime);
-        stars.transform.localScale = Vector3.Lerp(stars.transform.localScale, StarScale[currentStage], lerpSpeed * Time.deltaTime);
-        sunObject.transform.rotation = Quaternion.Lerp(sunObject.transform.rotation, Quaternion.Euler(sunObjRots[currentStage]), lerpSpeed * Time.deltaTime);
+        if(isMidStage)
+        {
+            rend.material.mainTextureScale = new Vector2(Mathf.Lerp(tilingPositions[currentStage], tilingPositionsEnd[currentStage], lerpSpeedMidStage * Time.deltaTime), 1);
+            Sunlight.GetComponent<Light>().color = Color.Lerp(colours[currentStage], coloursEnd[currentStage], lerpSpeedMidStage * Time.deltaTime);
+            Sunlight.transform.rotation = Quaternion.Lerp(Quaternion.Euler(sunRotations[currentStage]), Quaternion.Euler(sunRotationsEnd[currentStage]), lerpSpeedMidStage * Time.deltaTime);
+            stars.transform.localScale = Vector3.Lerp(StarScale[currentStage], StarScaleEnd[currentStage], lerpSpeedMidStage * Time.deltaTime);
+            sunObject.transform.rotation = Quaternion.Lerp(Quaternion.Euler(sunObjRots[currentStage]), Quaternion.Euler(sunObjRotsEnd[currentStage]), lerpSpeedMidStage * Time.deltaTime);
+           
+            
+        }
+        else
+        {
+            rend.material.mainTextureScale = new Vector2(Mathf.Lerp(rend.material.mainTextureScale.x, tilingPositions[currentStage], lerpSpeedChangeStage * Time.deltaTime), 1);
+            Sunlight.GetComponent<Light>().color = Color.Lerp(Sunlight.GetComponent<Light>().color, colours[currentStage], lerpSpeedChangeStage * Time.deltaTime);
+            Sunlight.transform.rotation = Quaternion.Lerp(Sunlight.transform.rotation, Quaternion.Euler(sunRotations[currentStage]), lerpSpeedChangeStage * Time.deltaTime);
+            stars.transform.localScale = Vector3.Lerp(stars.transform.localScale, StarScale[currentStage], lerpSpeedChangeStage * Time.deltaTime);
+            sunObject.transform.rotation = Quaternion.Lerp(sunObject.transform.rotation, Quaternion.Euler(sunObjRots[currentStage]), lerpSpeedChangeStage * Time.deltaTime);
+            StageTransitionTimer += Time.deltaTime;
+            if (StageTransitionTimer >= lerpSpeedChangeStage)
+            {
+                isMidStage = true;
+                StageTransitionTimer = 0;
+            }
+            
+        }
+       
     }
 }
