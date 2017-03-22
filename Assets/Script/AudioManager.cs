@@ -8,7 +8,7 @@ public class AudioManager : MonoBehaviour
     public float[] songTimes;
     public AudioClip[] songFiles;
     public float[] songBPMTimer;
-    public float[] timeOfDay;
+    public int[] timeOfDay;
 
     public float timeRemaining;
 
@@ -16,16 +16,27 @@ public class AudioManager : MonoBehaviour
 
     public AudioClip randomizedSong;
 
+    public int currentSong;
+
+    public int currentTime;
+
     // Use this for initialization
     void Start()
     {
 
-        randomizedSong = (songFiles[Random.Range(0, songFiles.Length)]);
+        currentSong = (Random.Range(0, songFiles.Length));
+
+        randomizedSong = songFiles[currentSong];
+
+        currentTime = timeOfDay[currentSong];
 
         for (int i = 0; i < songFiles.Length; i++)
         {
             songTimes[i] = songFiles[i].length;
         }
+
+        audioSource.clip = randomizedSong;
+        audioSource.PlayOneShot(randomizedSong);
     }
 
     // Update is called once per frame
@@ -38,12 +49,15 @@ public class AudioManager : MonoBehaviour
 
         if (timeRemaining <= 0.0f) {
             NewSong();
+            timeRemaining = randomizedSong.length;
         }
 
     }
 
     //randomize new song at end of song.
-    void NewSong() {
-        randomizedSong = (songFiles[Random.Range(0, songFiles.Length)]);
+    public void NewSong() {
+        currentSong = (Random.Range(0, songFiles.Length));
+        randomizedSong = (songFiles[currentSong]);
+        currentTime = timeOfDay[currentSong];
     }
 }

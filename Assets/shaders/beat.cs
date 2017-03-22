@@ -6,6 +6,8 @@ public class beat : MonoBehaviour
 {
     AudioSource source;
 
+    //AudioManager audioManager;
+
     float[] spectrum = new float[64];
     Material matCar;
     public GameObject car;
@@ -13,7 +15,8 @@ public class beat : MonoBehaviour
     public float multiplierPulseCar;
 
 
-    public GameObject[] leaves;
+    //public GameObject[] leaves;
+    public List<GameObject> leaves;
     public List<Material> leavesMat;
     public GameObject[] rocks;
     public List<Material> rocksMat;
@@ -50,56 +53,58 @@ public class beat : MonoBehaviour
     }
 
 
+    //public Collider treeDistCollider;
+
 
     // Use this for initialization
     void Start()
     {
-        source = GetComponent<AudioSource>();
+        //audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+        //source.clip = audioManager.randomizedSong;
+
+        source = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioSource>();
         matCar = car.GetComponent<Renderer>().material;
         carZScale = car.transform.lossyScale.z;
-   
-        for (int i = 0; i < leaves.Length; ++i)
-        {
-            Material[] tempMats = leaves[i].GetComponent<Renderer>().materials;
 
-            foreach (Material m in tempMats)
-            {
-                if (m.shader.name == "Custom/tree")
-                {
-                    leavesMat.Add(m);
-                    materialsToChange.Add(m);
+        //UpdateMatArray();
 
-                }
-            }
-        }
-
-        for (int i = 0; i < rocks.Length; ++i)
-        {
-            Material[] tempMats = rocks[i].GetComponent<Renderer>().materials;
-            foreach (Material m in tempMats)
-            {
-                if (m.shader.name == "Custom/rock")
-                {
-                    rocksMat.Add(m);
-                    materialsToChange.Add(m);
-
-                }
-            }
-        }
+        rocks = GameObject.FindGameObjectsWithTag("Rocks");
+        //leaves = GameObject.FindGameObjectsWithTag("Trees");
 
 
-        
     }
 
     // Update is called once per frame
     void Update()
     {
+        foreach(GameObject tree in GameObject.FindGameObjectsWithTag("Trees") )
+        {
+            if( !tree.GetComponent<Rigidbody>() )
+            {
+                tree.AddComponent<Rigidbody>();
+                tree.GetComponent<Rigidbody>().isKinematic = true;
+                tree.GetComponent<Rigidbody>().useGravity = false;
+            }
+
+        }
+
+
+        foreach (GameObject rock in GameObject.FindGameObjectsWithTag("Rocks"))
+        {
+            if (!rock.GetComponent<Rigidbody>())
+            {
+                rock.AddComponent<Rigidbody>();
+                rock.GetComponent<Rigidbody>().isKinematic = true;
+                rock.GetComponent<Rigidbody>().useGravity = false;
+            }
+
+        }
+
+
         source.GetSpectrumData(spectrum, 0, FFTWindow.Hanning);
 
-         leaves = GameObject.FindGameObjectsWithTag("Trees");
 
 
-       
 
         //Vector3 pos = transform.position;
         //pos.y = pos.y*0.9f + spectrum[0]*0.1f;
@@ -231,6 +236,115 @@ public class beat : MonoBehaviour
         for (int i = 1; i < 64; ++i)
         {
             Debug.DrawLine(new Vector3((i - 1) / 100f, spectrum[i - 1], 0), new Vector3(i / 100, spectrum[i], 0), Color.red);
+        }
+    }
+
+    //public void UpdateMatArray() {
+
+
+
+    //    for (int i = 0; i < leaves.Length; ++i)
+    //    {
+
+
+
+    //        if (leaves[i].GetComponent<Renderer>() != null) {
+
+    //            Material[] tempMats = leaves[i].GetComponent<Renderer>().materials;
+
+    //            foreach (Material m in tempMats)
+    //            {
+    //                if (m.shader.name == "Custom/tree")
+    //                {
+    //                    leavesMat.Add(m);
+    //                    materialsToChange.Add(m);
+
+    //                }
+    //            } 
+    //        }
+    //    }
+
+    //    for (int i = 0; i < rocks.Length; ++i)
+    //    {
+
+
+
+    //        if (rocks[i].GetComponent<Renderer>() != null) {
+
+    //            Material[] tempMats = rocks[i].GetComponent<Renderer>().materials;
+
+    //            foreach (Material m in tempMats)
+    //            {
+    //                if (m.shader.name == "Custom/rock")
+    //                {
+    //                    rocksMat.Add(m);
+    //                    materialsToChange.Add(m);
+
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
+
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Trees"))
+        {
+            Material[] tempMats = other.GetComponent<Renderer>().materials;
+
+            foreach (Material m in tempMats)
+            {
+                if (m.shader.name == "Custom/tree")
+                {
+                    materialsToChange.Add(m);
+
+                }
+            }
+        }
+
+        if (other.CompareTag("Rocks"))
+        {
+            Material[] tempMats = other.GetComponent<Renderer>().materials;
+
+            foreach (Material m in tempMats)
+            {
+                if (m.shader.name == "Custom/rock")
+                {
+                    materialsToChange.Add(m);
+
+                }
+            }
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Trees"))
+        {
+            Material[] tempMats = other.GetComponent<Renderer>().materials;
+
+            foreach (Material m in tempMats)
+            {
+                if (m.shader.name == "Custom/tree")
+                {
+                    materialsToChange.Remove(m);
+
+                }
+            }
+        }
+
+        if (other.CompareTag("Rocks"))
+        {
+            Material[] tempMats = other.GetComponent<Renderer>().materials;
+
+            foreach (Material m in tempMats)
+            {
+                if (m.shader.name == "Custom/rock")
+                {
+                    materialsToChange.Remove(m);
+
+                }
+            }
         }
     }
 }
