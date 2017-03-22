@@ -19,11 +19,12 @@ public class AudioManager : MonoBehaviour
     public int currentSong;
 
     public int currentTime;
+    skyTimeChanger SkyTimeChanger;
 
     // Use this for initialization
     void Start()
     {
-
+        SkyTimeChanger = GameObject.FindGameObjectWithTag("sky").GetComponent<skyTimeChanger>();
         currentSong = (Random.Range(0, songFiles.Length));
 
         randomizedSong = songFiles[currentSong];
@@ -50,6 +51,8 @@ public class AudioManager : MonoBehaviour
         if (timeRemaining <= 0.0f) {
             NewSong();
             timeRemaining = randomizedSong.length;
+            SkyTimeChanger.progressStage(timeOfDay[currentSong]);
+            SkyTimeChanger.lerpSpeedMidStage = songTimes[currentSong];
         }
 
     }
