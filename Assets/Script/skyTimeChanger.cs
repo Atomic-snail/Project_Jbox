@@ -26,7 +26,6 @@ public class skyTimeChanger : MonoBehaviour {
     public float StageTransitionTimer;
     public float lerpSpeedChangeStage;
     public float lerpSpeedMidStage;
-    public float lerpMidStageTimer;
 
     // Use this for initialization
     void Start () {
@@ -52,13 +51,12 @@ public class skyTimeChanger : MonoBehaviour {
         }
         if(isMidStage)
         {
-            lerpMidStageTimer += Time.deltaTime;
-            rend.material.mainTextureScale = new Vector2(Mathf.Lerp(tilingPositions[currentStage], tilingPositionsEnd[currentStage], lerpMidStageTimer / lerpSpeedMidStage), 1);
-            Sunlight.GetComponent<Light>().color = Color.Lerp(colours[currentStage], coloursEnd[currentStage], lerpMidStageTimer / lerpSpeedMidStage);
-            Sunlight.transform.rotation = Quaternion.Lerp(Quaternion.Euler(sunRotations[currentStage]), Quaternion.Euler(sunRotationsEnd[currentStage]), lerpMidStageTimer / lerpSpeedMidStage);
-            stars.transform.localScale = Vector3.Lerp(StarScale[currentStage], StarScaleEnd[currentStage], lerpMidStageTimer / lerpSpeedMidStage);
-            sunObject.transform.rotation = Quaternion.Lerp(Quaternion.Euler(sunObjRots[currentStage]), Quaternion.Euler(sunObjRotsEnd[currentStage]), lerpMidStageTimer / lerpSpeedMidStage);
-            print("midstage code");
+            rend.material.mainTextureScale = new Vector2(Mathf.Lerp(tilingPositions[currentStage], tilingPositionsEnd[currentStage], lerpSpeedMidStage * Time.deltaTime), 1);
+            Sunlight.GetComponent<Light>().color = Color.Lerp(colours[currentStage], coloursEnd[currentStage], lerpSpeedMidStage * Time.deltaTime);
+            Sunlight.transform.rotation = Quaternion.Lerp(Quaternion.Euler(sunRotations[currentStage]), Quaternion.Euler(sunRotationsEnd[currentStage]), lerpSpeedMidStage * Time.deltaTime);
+            stars.transform.localScale = Vector3.Lerp(StarScale[currentStage], StarScaleEnd[currentStage], lerpSpeedMidStage * Time.deltaTime);
+            sunObject.transform.rotation = Quaternion.Lerp(Quaternion.Euler(sunObjRots[currentStage]), Quaternion.Euler(sunObjRotsEnd[currentStage]), lerpSpeedMidStage * Time.deltaTime);
+           
             
         }
         else
@@ -72,7 +70,6 @@ public class skyTimeChanger : MonoBehaviour {
             if (StageTransitionTimer >= lerpSpeedChangeStage)
             {
                 isMidStage = true;
-                lerpMidStageTimer = 0;
                 StageTransitionTimer = 0;
             }
             
