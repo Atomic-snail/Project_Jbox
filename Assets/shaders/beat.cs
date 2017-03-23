@@ -43,6 +43,8 @@ public class beat : MonoBehaviour
     public float timerForPulse;
     float tp;
 
+    AudioManager audioManager;
+
     public int index = 0;
 
     [System.Serializable]
@@ -59,7 +61,9 @@ public class beat : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+
+
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
         //source.clip = audioManager.randomizedSong;
 
         source = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioSource>();
@@ -70,6 +74,8 @@ public class beat : MonoBehaviour
 
         rocks = GameObject.FindGameObjectsWithTag("Rocks");
         //leaves = GameObject.FindGameObjectsWithTag("Trees");
+
+        timerForPulse = audioManager.currentBPM;
 
 
     }

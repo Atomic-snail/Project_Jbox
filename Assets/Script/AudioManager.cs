@@ -19,6 +19,9 @@ public class AudioManager : MonoBehaviour
     public int currentSong;
 
     public int currentTime;
+
+    public float currentBPM;
+
     skyTimeChanger SkyTimeChanger;
 
     // Use this for initialization
@@ -30,6 +33,8 @@ public class AudioManager : MonoBehaviour
         randomizedSong = songFiles[currentSong];
 
         currentTime = timeOfDay[currentSong];
+
+        currentBPM = songBPMTimer[currentSong];
 
         for (int i = 0; i < songFiles.Length; i++)
         {
@@ -62,5 +67,6 @@ public class AudioManager : MonoBehaviour
         currentSong = (Random.Range(0, songFiles.Length));
         randomizedSong = (songFiles[currentSong]);
         currentTime = timeOfDay[currentSong];
+        currentBPM = songBPMTimer[currentSong];
     }
 }
