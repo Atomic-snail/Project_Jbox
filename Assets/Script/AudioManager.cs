@@ -12,7 +12,7 @@ public class AudioManager : MonoBehaviour
     public int[] timeOfDay;
 
     //Song string array
-    public int[] songs = new int[] { 1, 2 };
+    
     string[] songNames = new string[] { "Feel It", "Blue Between" };
     //Text Change
     public Text songNameText;
@@ -24,6 +24,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip randomizedSong;
 
     public int currentSong;
+    public int[] songPlayOrder;
 
     public int currentTime;
 
@@ -35,46 +36,96 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         SkyTimeChanger = GameObject.FindGameObjectWithTag("sky").GetComponent<skyTimeChanger>();
-        currentSong = (Random.Range(0, songFiles.Length));
 
-        randomizedSong = songFiles[currentSong];
-
-        currentTime = timeOfDay[currentSong];
-
-        currentBPM = songBPMTimer[currentSong];
-
+        
         for (int i = 0; i < songFiles.Length; i++)
         {
             songTimes[i] = songFiles[i].length;
         }
 
-        audioSource.clip = randomizedSong;
+        
+        loopPlay();
+        if (currentSong >= songFiles.Length)
+        {
+            loopPlay();
+            currentSong = 0;
+        }
+
+        randomizedSong = (songFiles[songPlayOrder[currentSong]]);
+        currentTime = timeOfDay[songPlayOrder[currentSong]];
+        currentBPM = songBPMTimer[songPlayOrder[currentSong]];
+        songNameText.text = randomizedSong.name;
         audioSource.PlayOneShot(randomizedSong);
+        timeRemaining = randomizedSong.length;
+        SkyTimeChanger.progressStage(timeOfDay[songPlayOrder[currentSong]]);
+        SkyTimeChanger.lerpSpeedMidStage = songTimes[songPlayOrder[currentSong]];
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.A))
+            NewSong();
 
-        timeRemaining = randomizedSong.length;
+        //timeRemaining = randomizedSong.length;
 
-        timeRemaining -= Time.time;
+        timeRemaining -= Time.deltaTime;
 
         if (timeRemaining <= 0.0f) {
             NewSong();
-            timeRemaining = randomizedSong.length;
-            SkyTimeChanger.progressStage(timeOfDay[currentSong]);
-            SkyTimeChanger.lerpSpeedMidStage = songTimes[currentSong];
+            
         }
-
+        print(songPlayOrder[currentSong]);
     }
 
     //randomize new song at end of song.
     public void NewSong() {
-        currentSong = (Random.Range(0, songFiles.Length));
-        randomizedSong = (songFiles[currentSong]);
-        currentTime = timeOfDay[currentSong];
-        currentBPM = songBPMTimer[currentSong];
+        currentSong++;
+        audioSource.Stop();
+        if (currentSong >= songFiles.Length)
+        {
+            loopPlay();
+            currentSong = 0;
+        }
+            
+        randomizedSong = (songFiles[songPlayOrder[currentSong]]);
+        currentTime = timeOfDay[songPlayOrder[currentSong]];
+        currentBPM = songBPMTimer[songPlayOrder[currentSong]];
+        songNameText.text = randomizedSong.name;
+        audioSource.PlayOneShot(randomizedSong);
+        timeRemaining = randomizedSong.length;
+        SkyTimeChanger.progressStage(timeOfDay[songPlayOrder[currentSong]]);
+        SkyTimeChanger.lerpSpeedMidStage = songTimes[songPlayOrder[currentSong]];
+    }
+    public void loopPlay()
+    {
+        for (int i = 0; i < songFiles.Length; i++)
+        {
+            songPlayOrder[i] = 70000;
+        }
+        for (int i = 0; i < songFiles.Length; i++)
+        {
+            songPlayOrder[i] = 70000;
+            int nextNum;
+            bool There;
+            do
+            {
+                nextNum = Random.Range(0, songFiles.Length);
+                There = false;
+                for (int ii = 0; ii < songFiles.Length; ii++)
+                {
+                    if(nextNum == songPlayOrder[ii])
+                    {
+                        
+                        There = true;
+                    }
+                }
+                print(nextNum);
+            }
+            while (There);
+            songPlayOrder[i] = nextNum;
+
+        }
     }
 
 
