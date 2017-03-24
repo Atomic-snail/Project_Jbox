@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
@@ -9,6 +10,12 @@ public class AudioManager : MonoBehaviour
     public AudioClip[] songFiles;
     public float[] songBPMTimer;
     public int[] timeOfDay;
+
+    //Song string array
+    public int[] songs = new int[] { 1, 2 };
+    string[] songNames = new string[] { "Feel It", "Blue Between" };
+    //Text Change
+    public Text songNameText;
 
     public float timeRemaining;
 
@@ -69,4 +76,6 @@ public class AudioManager : MonoBehaviour
         currentTime = timeOfDay[currentSong];
         currentBPM = songBPMTimer[currentSong];
     }
+
+
 }
