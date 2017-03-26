@@ -314,7 +314,7 @@ public class beat : MonoBehaviour
 
             foreach (Material m in tempMats)
             {
-                if (m.shader.name == "Custom/rock")
+                if (m.shader.name == "Custom/tree")
                 {
                     materialsToChange.Add(m);
 
@@ -345,7 +345,7 @@ public class beat : MonoBehaviour
 
             foreach (Material m in tempMats)
             {
-                if (m.shader.name == "Custom/rock")
+                if (m.shader.name == "Custom/tree")
                 {
                     materialsToChange.Remove(m);
 
