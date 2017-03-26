@@ -48,11 +48,11 @@ public class skyTimeChanger : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-		if(Input.GetKeyDown(KeyCode.T) && isMidStage)
-        {
-            progressStage(currentStage+1);
-            //LeftHeadLight.intensity = 0;
-        }
+		//if(Input.GetKeyDown(KeyCode.T) && isMidStage)
+  //      {
+  //          progressStage(currentStage+1);
+  //          //LeftHeadLight.intensity = 0;
+  //      }
         if(isMidStage)
         {
             lerpMidStageTimer += Time.deltaTime;

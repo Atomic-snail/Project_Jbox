@@ -64,8 +64,8 @@ public class AudioManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-            NewSong();
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.Quit();
 
         //timeRemaining = randomizedSong.length;
 
